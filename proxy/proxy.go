@@ -104,6 +104,7 @@ func handleTunneling(w http.ResponseWriter, r *http.Request, timeout time.Durati
 	if !ok {
 		glog.Errorln("Attempted to hijack connection that does not support it")
 		http.Error(w, "Hijacking not supported", http.StatusInternalServerError)
+		destConn.Close()
 		return
 	}
 
@@ -111,6 +112,8 @@ func handleTunneling(w http.ResponseWriter, r *http.Request, timeout time.Durati
 	if err != nil {
 		glog.Errorf("Failed to hijack connection, %s\n", err.Error())
 		http.Error(w, err.Error(), http.StatusServiceUnavailable)
+		destConn.Close()
+		return
 	}
 
 	go transfer(destConn, clientConn)
