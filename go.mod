@@ -1,5 +1,4 @@
-module github.com/jthomperoo/simple-proxy
-
+module github.com/TranDangSy/simple_proxy
 go 1.24.0
 
 require (

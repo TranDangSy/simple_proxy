@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  simple-proxy:
+    build: .
+    image: simple-proxy:v1.0.0
+    container_name: simple-proxy
+    ports:
+      - "3128:3128"  # Host:Container port mapping
+    command: [
+      "-port", "3128",
+      "-basic-auth", "admin:password123",
+      "-bind", "0.0.0.0",
+      "-timeout", "30",
+      "-log-auth",
+      "-log-headers"
+    ]
+    restart: unless-stopped
+
+  # Alternative configuration without auth
+  simple-proxy-noauth:
+    build: .
+    image: simple-proxy:v1.0.0
+    container_name: simple-proxy-noauth
+    profiles: ["noauth"]  # Only start with --profile noauth
+    ports:
+      - "8080:8080"
+    command: [
+      "-port", "8080",
+      "-bind", "0.0.0.0"
+    ]
+    restart: unless-stopped
+
+  # HTTPS proxy configuration
+  simple-proxy-https:
+    build: .
+    image: simple-proxy:v1.0.0
+    container_name: simple-proxy-https
+    profiles: ["https"]  # Only start with --profile https
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./certs:/certs:ro  # Mount certificates
+    command: [
+      "-protocol", "https",
+      "-port", "8443",
+      "-cert", "/certs/server.crt",
+      "-key", "/certs/server.key",
+      "-basic-auth", "admin:securepass",
+      "-bind", "0.0.0.0"
+    ]
+    restart: unless-stopped

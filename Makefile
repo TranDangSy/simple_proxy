@@ -1,4 +1,4 @@
-VERSION=development
+VERSION=v1.0.0
 
 default:
 	@echo "=============Building binaries============="
