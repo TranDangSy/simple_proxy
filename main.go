@@ -75,7 +75,7 @@ func main() {
 		if socks5Auth != "" {
 			parts := strings.Split(socks5Auth, ":")
 			if len(parts) < 2 {
-				glog.Fatalf("Invalid socks5 basic auth provided, must be in format 'username:password', auth: %s\n", basicAuth)
+				glog.Fatalf("Invalid socks5 basic auth provided, must be in format 'username:password', auth: %s\n", socks5Auth)
 			}
 
 			socks5Forward.Username = &parts[0]
